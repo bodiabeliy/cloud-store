@@ -7,7 +7,7 @@ const app = express()
 const PORT = config.get("ServerPort")
 const serverStart = async () => {
     try {
-        // подключение к БВ monoose
+        // подключение к БД monoose
         mogoose.connect(config.get("DataBaseURL"))
 
 
