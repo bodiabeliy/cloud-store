@@ -1,0 +1,5 @@
+{
+    "ServerPort": 5000,
+    "DataBaseURL": "mongodb+srv://bogdan:superpershing1@cloudestore.5se8b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
+}
