@@ -2,11 +2,14 @@ const express = require("express")
 const mogoose = require("mongoose")
 const config  = require("config")
 const authRouter = require("./routes/authorization")
+// const fileRouter = require("./routes/files")
 
 
 const app = express()
 app.use(express.json())
+
 app.use('/api/auth', authRouter)
+
 
 const PORT = config.get("ServerPort")
 const serverStart = async () => {
