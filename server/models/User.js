@@ -6,5 +6,7 @@ const User = new Schema({
     diskSpace: {type:Number, default:1024**3*10},
     userSpace: {type:Number, default:0},
     avatar: {type:String },
-    files: {}
+    files: [{type:Object, ref:"File"}]
 })
+
+module.exports = model("User", User);
