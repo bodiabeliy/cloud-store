@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const {check, validationResult} = require("express-validator")
 
+const authMiddleWare = require("../middleware/Authorization")
+
 const fileService = require("../services/fileService")
 const File = require("../models/File")
 
@@ -68,6 +70,28 @@ async (request, responce ) => {
         if(!isPasswordSame) {
             return responce.status(400).json({message:"Password invalid!"}) 
         }
+        const token = jwt.sign({id:user.id}, config.get("secretKey"), {expiresIn: "1h"})
+        return responce.json({
+            token,
+            user: {
+                id:user.id,
+                email:user.email,
+                diskSpace:user.diskSpace,
+                userSpace:user.userSpace,
+                avatar:user.avatar,
+                files:user.files
+            }
+        })
+    } catch (error) {
+        responce.send({message: `Server error ${error}`})
+    }
+})
+
+// jwt-токен пользователя
+authRouter.get('/auth', authMiddleWare,
+async (request, responce ) => {
+    try {
+        const user = await User.findOne({_id:request.user.id})
         const token = jwt.sign({id:user.id}, config.get("secretKey"), {expiresIn: "1h"})
         return responce.json({
             token,

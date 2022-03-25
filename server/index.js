@@ -8,7 +8,8 @@ const authRouter = require("./routes/authorization")
 const app = express()
 // прослойка для передачи запросов на все домены
 app.use(cors({
-    origin: '*'
+    origin: '*',
+    allowedHeaders:'*'
 }));
 
 app.use(express.json())

@@ -1,21 +1,25 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { getUserSelector, registerUser } from '../../redux-slices/UserSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { authUser } from '../../../redux-slices/UserSlice';
+import { useHistory } from 'react-router-dom';
 
-import './index.scss';
+import '../index.scss';
 import { Modal, Form } from 'antd';
-import InputField from '../Input/input';
-import RegistryBtn from '../Button/Button';
+import InputField from '../../Input/input';
+import RegistryBtn from '../../Button/Button';
 
-function Popup() {
-  const dispatch = useDispatch();
-
+function AuthPopup() {
+  const route = useHistory();
+  const [isModalVisible, setIsModalVisible] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    route.push('/');
+  };
   return (
     <>
-      <Modal title="Регистрация" visible={true}>
+      <Modal title="Авторизация" visible={isModalVisible} onCancel={handleCancel}>
         <Form.Item
           label="Имя пользователя (логин):"
           name="email"
@@ -52,12 +56,12 @@ function Popup() {
         </Form.Item>
         <RegistryBtn
           type="primary"
-          description="Зарегистрировать"
-          submitForm={() => registerUser(email, password)}
+          description="Авторизация"
+          submitForm={() => authUser(email, password)}
         />
       </Modal>
     </>
   );
 }
 
-export default Popup;
+export default AuthPopup;

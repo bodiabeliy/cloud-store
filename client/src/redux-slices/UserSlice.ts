@@ -20,18 +20,23 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    getVisitStart: (state) => {},
-
-    getVisitSuccess: (state, action: PayloadAction) => {},
-    getVisitFailure: (state) => {},
+    authUserSuccess: (state) => {
+      state.isAuth = true;
+      console.log('Log in', state.isAuth);
+    },
+    authUserEntry: (state) => {
+      state.isAuth = false;
+      console.log('Log out', state.isAuth);
+    },
   },
 });
 
-export const { getVisitStart, getVisitSuccess, getVisitFailure } = userSlice.actions;
+export const { authUserSuccess, authUserEntry } = userSlice.actions;
 
 export const getUserSelector = (state: RootState) => state.user.currentUser;
+export const isAuthUserSelector = (state: RootState) => state.user.isAuth;
 
-// Thunk actions
+// регистрация пользователя
 export const registerUser = async (email: string, password: string) => {
   try {
     const response = await api.post(`/auth/registration`, {
@@ -44,7 +49,25 @@ export const registerUser = async (email: string, password: string) => {
   }
 };
 
-export const getSingleVisit =
-  (id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {};
+// авторизация пользователя
+export const authUser = async (email: string, password: string) => {
+  try {
+    const response = await api.post(`/auth/login`, {
+      email,
+      password,
+    });
+    localStorage.setItem('token', response.data.token);
+  } catch (error: any) {}
+};
+
+// добавление jwt-токена авторизированому пользователю
+export const getUserToken = async () => {
+  try {
+    const response = await api.get(`/auth/auth`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+    localStorage.setItem('token', response.data.token);
+  } catch (error: any) {}
+};
 
 export default userSlice.reducer;

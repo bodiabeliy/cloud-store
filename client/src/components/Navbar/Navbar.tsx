@@ -1,5 +1,5 @@
-import React from 'react';
-import { Layout, Menu, Empty, Space } from 'antd';
+import React, { useCallback, useEffect } from 'react';
+import { Layout, Menu, Empty } from 'antd';
 import { NavLink } from 'react-router-dom';
 import {
   DesktopOutlined,
@@ -8,10 +8,34 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  isAuthUserSelector,
+  authUserSuccess,
+  authUserEntry,
+  getUserToken,
+  getUserSelector,
+} from '../../redux-slices/UserSlice';
 
 const { Header, Content, Sider } = Layout;
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const userLogin = useSelector(getUserSelector);
+  const isAuthorization = useSelector(isAuthUserSelector);
+
+  useEffect(() => {
+    getUserToken();
+  }, []);
+
+  useEffect(() => {
+    dispatch(authUserSuccess());
+  }, []);
+
+  const Logout = useCallback(() => {
+    dispatch(authUserEntry());
+  }, []);
+
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
@@ -32,11 +56,21 @@ function Navbar() {
               style={{ display: 'flex', flexDirection: 'row-reverse' }}
             >
               <Menu.Item key="1">
-                <NavLink to={'/login'}>Войти</NavLink>
+                {isAuthorization == false ? (
+                  <NavLink to={'/login'}>Войти</NavLink>
+                ) : (
+                  <NavLink to={'/'} onClick={Logout}>
+                    Выйти
+                  </NavLink>
+                )}
               </Menu.Item>
-              <Menu.Item key="2">
-                <NavLink to={'/registration'}>Регистрация</NavLink>
-              </Menu.Item>
+              {isAuthorization == false ? (
+                <Menu.Item key="2">
+                  <NavLink to={'/registration'}>Регистрация</NavLink>
+                </Menu.Item>
+              ) : (
+                <NavLink to={'/'}>{userLogin.email}</NavLink>
+              )}
             </Menu>
           </Header>
           <Content>
