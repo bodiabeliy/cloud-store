@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { authUser } from '../../../redux-slices/UserSlice';
+import { Login } from '../../../redux-slices/UserSlice';
 import { useHistory } from 'react-router-dom';
 
 import '../index.scss';
 import { Modal, Form } from 'antd';
 import InputField from '../../Input/input';
 import RegistryBtn from '../../Button/Button';
+import { useDispatch } from 'react-redux';
 
 function AuthPopup() {
+  const dispatch = useDispatch();
+
   const route = useHistory();
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [email, setEmail] = useState('');
@@ -57,7 +60,7 @@ function AuthPopup() {
         <RegistryBtn
           type="primary"
           description="Авторизация"
-          submitForm={() => authUser(email, password)}
+          submitForm={() => dispatch(Login(email, password))}
         />
       </Modal>
     </>

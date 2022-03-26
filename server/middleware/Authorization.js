@@ -2,7 +2,7 @@ const config  = require("config")
 const jwt = require("jsonwebtoken")
 
 // cоздание токена авторизации
-module.exports =(req, res, next) => {
+module.exports = (req, res, next) => {
     if (req.methods === "OPTOIONS") {
         next()
     }
@@ -16,6 +16,6 @@ module.exports =(req, res, next) => {
         req.user = decoded
         next()
     } catch (error) {
-        
+        return res.status(401).json({message:"Token is crashed!"})
     }
 }

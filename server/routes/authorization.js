@@ -45,7 +45,7 @@ async (request, responce ) => {
         await createUser.save()
 
          // создаем для пользователя папку под файлы
-         await fileService.createFolders(new File({user:user.id, name: ''}))
+         await fileService.createDir(new File({user:user.id, name: ''}))
 
             return responce.json({massege: "User was creared successfully!"})
         
@@ -91,7 +91,7 @@ async (request, responce ) => {
 authRouter.get('/auth', authMiddleWare,
 async (request, responce ) => {
     try {
-        const user = await User.findOne({_id:request.user.id})
+        const user = await User.findOne({id:request.user.id})
         const token = jwt.sign({id:user.id}, config.get("secretKey"), {expiresIn: "1h"})
         return responce.json({
             token,

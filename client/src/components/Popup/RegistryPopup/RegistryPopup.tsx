@@ -20,7 +20,7 @@ function RegistryPopup() {
   };
 
   const Login = () => {
-    dispatch(registerUser(email, password));
+    registerUser(email, password);
     setIsModalVisible(false);
     route.push('/');
   };

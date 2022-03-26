@@ -3,7 +3,7 @@ const cors = require('cors')
 const mogoose = require("mongoose")
 const config  = require("config")
 const authRouter = require("./routes/authorization")
-// const fileRouter = require("./routes/files")
+const fileRouter = require("./routes/files")
 
 const app = express()
 // прослойка для передачи запросов на все домены
@@ -15,6 +15,7 @@ app.use(cors({
 app.use(express.json())
 
 app.use('/api/auth', authRouter)
+app.use('/api/files', fileRouter)
 
 
 const PORT = config.get("ServerPort")

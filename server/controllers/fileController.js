@@ -6,28 +6,29 @@ const File = require("../models/File")
 class FileController {
 
     //
-    async createFolder(request, responce) {
+    async createDir(request, response) {
         try {
             const {name, type, parent} = request.body
-            const creatingFile = new File({name, type, parent, user: request.user.id})
+            const creatingFile = new File({name, type, parent, user:request.user.id})
 
-            // определяем путь для созданого файла
-            const parentFile = await File.findOne({id:parent})
+            // определяем имеет ли созданный файл родителя
+            const parentFile = await File.findOne({_id:parent})
             if (!parentFile) {
                 creatingFile.path = name
-                await FileService.createFolder(creatingFile)
+                await FileService.createDir(creatingFile)
             }
             else {
                 creatingFile.path = `${parentFile.path}\\${creatingFile.name}`
-                await FileService.createFolder(creatingFile)
-                parentFile.childern.push(creatingFile.id)
+                await FileService.createDir(creatingFile)
+                parentFile.childern.push(creatingFile._id)
                 await parentFile.save()
             }
             await creatingFile.save()
-            return responce.json(file)
+            return response.json(creatingFile)
             
         } catch (error) {
-            return responce.status(400).json(error)
+            console.log(error);
+            return response.status(400).json(error)
         }
     }
 }

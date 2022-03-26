@@ -20,18 +20,20 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    authUserSuccess: (state) => {
+    loginUserSuccess: (state, action: PayloadAction<User>) => {
+      state.currentUser.email = action.payload.email;
+      state.currentUser.password = action.payload.password;
       state.isAuth = true;
-      console.log('Log in', state.isAuth);
     },
-    authUserEntry: (state) => {
+    logoutUserSuccess: (state) => {
+      state.currentUser.email = '';
+      state.currentUser.password = '';
       state.isAuth = false;
-      console.log('Log out', state.isAuth);
     },
   },
 });
 
-export const { authUserSuccess, authUserEntry } = userSlice.actions;
+export const { loginUserSuccess, logoutUserSuccess } = userSlice.actions;
 
 export const getUserSelector = (state: RootState) => state.user.currentUser;
 export const isAuthUserSelector = (state: RootState) => state.user.isAuth;
@@ -50,12 +52,17 @@ export const registerUser = async (email: string, password: string) => {
 };
 
 // авторизация пользователя
-export const authUser = async (email: string, password: string) => {
+export const Login = (email: string, password: string) => async (dispatch: AppDispatch) => {
   try {
     const response = await api.post(`/auth/login`, {
       email,
       password,
     });
+    dispatch(loginUserSuccess({ email, password }));
+    // dispatch(loginUserSuccess(response.data.user));
+
+    console.log(response.data);
+
     localStorage.setItem('token', response.data.token);
   } catch (error: any) {}
 };
@@ -66,8 +73,12 @@ export const getUserToken = async () => {
     const response = await api.get(`/auth/auth`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
+    console.log(response.data.token);
     localStorage.setItem('token', response.data.token);
-  } catch (error: any) {}
+    return response.data.token;
+  } catch (error: any) {
+    localStorage.removeItem('token');
+  }
 };
 
 export default userSlice.reducer;

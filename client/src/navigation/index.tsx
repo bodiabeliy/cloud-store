@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import NavigationLayout from '../components/Navbar/Navbar';
+import NavigationLayout from '../components/Dashboard/Dashboard';
 import RegitryPopup from '../components/Popup/RegistryPopup/RegistryPopup';
 import AuthPopup from '../components/Popup/AuthPopup/AuthPopup';
 
