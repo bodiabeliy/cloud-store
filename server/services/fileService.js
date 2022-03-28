@@ -1,7 +1,8 @@
 const fs = require("fs") // работа с файловой системой
-const config  = require("config")
-
 const File = require("../models/File")
+const config  = require("config")
+const path = require('path');
+
 
 
 class FileService {
@@ -10,15 +11,20 @@ class FileService {
     createDir(file) {
 
         // создание пути  для файла (путь к домашей папке\имя пользователя\относительный путь)
-        const filePath = `${config.get('filePath')}\\${file.user}\\${file.path}`
-        alert(filePath)
+        const filePath = `${config.get('filePath')}/${file.user}/${file.path}`
         return new Promise((resolve, reject) => {
             try {
                 
                 // если нет папки
                 if (!fs.existsSync(filePath)) {
-                    fs.mkdir(filePath, { recursive: true })
-                   return resolve({message: "Folder was createsd successfully!"})
+                    fs.mkdir(path.join(filePath, ''),
+                    { recursive: true }, (err) => {
+                      if (err) {
+                        return console.error(err);
+                      }
+                      console.log(path.join(filePath, ''));
+                      return resolve('Directory was created successfully!');
+                    });
                 }
                 else {
                     return reject({message: "folder already exist!"})
@@ -32,4 +38,4 @@ class FileService {
 
 }
 
-module.exports = FileService
+module.exports = new FileService()

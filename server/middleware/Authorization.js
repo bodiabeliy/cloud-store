@@ -2,20 +2,21 @@ const config  = require("config")
 const jwt = require("jsonwebtoken")
 
 // cоздание токена авторизации
-module.exports = (req, res, next) => {
-    if (req.methods === "OPTOIONS") {
-        next()
+
+
+
+module.exports = ( req, next) => {
+     if (req.methods === "OPTOIONS") {
     }
 
     try {
-       const token = req.headers.authorization.split('')[1]
+       const token = req.headers.authorization.split(' ')[1]
         if(!token) {
-            return res.status(401).json({message:"Authorization error!"})
+           console.log("Authorization failed!");
         }
         const decoded = jwt.verify(token, config.get("secretKey"))
-        req.user = decoded
-        next()
+        
     } catch (error) {
-        return res.status(401).json({message:"Token is crashed!"})
+        console.log(error);
     }
 }

@@ -7,10 +7,8 @@ import store from './store';
 import Navigator from './navigation';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Navigator />
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <Navigator />
+  </Provider>,
   document.getElementById('root')
 );

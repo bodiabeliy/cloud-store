@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getUserToken } from '../../redux-slices/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserSelector, getUserToken } from '../../redux-slices/UserSlice';
+
+import emptyList from '../../assets/empty.svg';
 
 import { Layout, Menu, Empty } from 'antd';
 import {
@@ -18,9 +20,14 @@ const { Content, Sider } = Layout;
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const userLogin = useSelector(getUserSelector);
 
   useEffect(() => {
-    getUserToken();
+    if (localStorage.getItem('token')) {
+      console.log(localStorage.getItem('token'));
+
+      getUserToken();
+    }
   }, []);
 
   return (
@@ -37,10 +44,7 @@ function Dashboard() {
 
         <Layout className="site-layout">
           <Content>
-            <Empty
-              description="Список пуст."
-              image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-            ></Empty>
+            <Empty description="Список пуст." image={emptyList}></Empty>
           </Content>
         </Layout>
       </Layout>

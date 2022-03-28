@@ -75,7 +75,6 @@ export const getUserToken = async () => {
     });
     console.log(response.data.token);
     localStorage.setItem('token', response.data.token);
-    return response.data.token;
   } catch (error: any) {
     localStorage.removeItem('token');
   }

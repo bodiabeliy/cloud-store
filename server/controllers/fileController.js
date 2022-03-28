@@ -18,12 +18,13 @@ class FileController {
                 await FileService.createDir(creatingFile)
             }
             else {
-                creatingFile.path = `${parentFile.path}\\${creatingFile.name}`
+                creatingFile.path = `${parentFile.path}/${creatingFile.name}`
                 await FileService.createDir(creatingFile)
                 parentFile.childern.push(creatingFile._id)
                 await parentFile.save()
             }
             await creatingFile.save()
+            console.log(creatingFile)
             return response.json(creatingFile)
             
         } catch (error) {
@@ -31,6 +32,14 @@ class FileController {
             return response.status(400).json(error)
         }
     }
+    async getFiles (request, response) {
+        try {
+            const files = await File.find({user:request.user.id, parent: request.query.parent})
+            return response.json({files})
+        } catch (error) {
+            return response.status(500).json(error)
+        }
+    }
 }
 
-module.exports = FileController
+module.exports = new FileController()
