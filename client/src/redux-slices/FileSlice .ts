@@ -2,41 +2,39 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState, AppDispatch } from '../store';
 import api from '../api';
 
-interface FileState {}
+interface FileState {
+  files: any[];
+  currentFolder: {};
+}
 
-const initialState: FileState = {};
+const initialState: FileState = {
+  files: [],
+  currentFolder: null,
+};
 
-export const visitSlice = createSlice({
-  name: 'visit',
+export const fileSlice = createSlice({
+  name: 'files',
   initialState,
-  reducers: {
-    getVisitStart: (state) => {},
-
-    getVisitSuccess: (state, action: PayloadAction) => {},
-    getVisitFailure: (state) => {},
-  },
+  reducers: {},
 });
 
-export const { getVisitStart, getVisitSuccess, getVisitFailure } = visitSlice.actions;
+export const {} = fileSlice.actions;
 
-export const getVisitsSelector = (state: RootState) => {};
+export const getFolderSelector = (state: RootState) => state.file.currentFolder;
 
 // Thunk actions
-export const getVisits = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+export const getFiles = () => async (dispatch: AppDispatch, getState: () => RootState) => {
   try {
-    dispatch(getVisitStart());
-    const response = await api.get<[]>(``, {
-      headers: {},
-      params: {},
+    const response = await api.get(`/files`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
-
-    dispatch(getVisitSuccess());
-  } catch (error) {
-    dispatch(getVisitFailure());
+    console.log(response.data);
+  } catch (error: any) {
+    alert(error);
   }
 };
 
 export const getSingleVisit =
   (id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {};
 
-export default visitSlice.reducer;
+export default fileSlice.reducer;

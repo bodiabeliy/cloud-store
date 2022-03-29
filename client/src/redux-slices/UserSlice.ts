@@ -68,12 +68,14 @@ export const Login = (email: string, password: string) => async (dispatch: AppDi
 };
 
 // добавление jwt-токена авторизированому пользователю
-export const getUserToken = async () => {
+export const getUserToken = () => async (dispatch: AppDispatch) => {
   try {
     const response = await api.get(`/auth/auth`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
-    console.log(response.data.token);
+    dispatch(loginUserSuccess(response.data.user));
+
+    console.log(response.data.user);
     localStorage.setItem('token', response.data.token);
   } catch (error: any) {
     localStorage.removeItem('token');

@@ -9,7 +9,7 @@ class FileController {
     async createDir(request, response) {
         try {
             const {name, type, parent} = request.body
-            const creatingFile = new File({name, type, parent, user:request.user.id})
+            const creatingFile = new File({name, type, parent, user:request.user})
 
             // определяем имеет ли созданный файл родителя
             const parentFile = await File.findOne({_id:parent})
@@ -24,7 +24,6 @@ class FileController {
                 await parentFile.save()
             }
             await creatingFile.save()
-            console.log(creatingFile)
             return response.json(creatingFile)
             
         } catch (error) {
@@ -34,7 +33,7 @@ class FileController {
     }
     async getFiles (request, response) {
         try {
-            const files = await File.find({user:request.user.id, parent: request.query.parent})
+            const files = await File.find({ parent: request.query.parent})
             return response.json({files})
         } catch (error) {
             return response.status(500).json(error)

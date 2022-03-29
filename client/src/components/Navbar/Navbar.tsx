@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Layout, Menu, Empty } from 'antd';
+import { Layout, Menu, Image } from 'antd';
 import { NavLink } from 'react-router-dom';
 import {
   DesktopOutlined,
@@ -14,6 +14,8 @@ import {
   getUserSelector,
   logoutUserSuccess,
 } from '../../redux-slices/UserSlice';
+
+import banner from '../../assets/banner.svg';
 
 const { Header } = Layout;
 function Navbar() {

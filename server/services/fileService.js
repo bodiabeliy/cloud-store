@@ -22,7 +22,7 @@ class FileService {
                       if (err) {
                         return console.error(err);
                       }
-                      console.log(path.join(filePath, ''));
+                      console.log(file);
                       return resolve('Directory was created successfully!');
                     });
                 }
