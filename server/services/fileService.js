@@ -20,9 +20,8 @@ class FileService {
                     fs.mkdir(path.join(filePath, ''),
                     { recursive: true }, (err) => {
                       if (err) {
-                        return console.error(err);
+                        return console.error('error', err);
                       }
-                      console.log(file);
                       return resolve('Directory was created successfully!');
                     });
                 }

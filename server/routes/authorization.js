@@ -5,8 +5,7 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const {check, validationResult} = require("express-validator")
 
-const authMiddleWare = require("../middleware/Authorization")
-
+const fileController = require("../controllers/fileController")
 const fileService = require("../services/fileService")
 const File = require("../models/File")
 
@@ -88,7 +87,7 @@ async (request, responce ) => {
 })
 
 // jwt-токен пользователя
-authRouter.get('/auth', authMiddleWare,
+authRouter.get('/auth', fileController.getUserToken,
 async (request, responce ) => {
     try {
         const user = await User.findOne({_id:request.user.id})

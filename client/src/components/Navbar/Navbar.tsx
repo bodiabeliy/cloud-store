@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Layout, Menu, Image } from 'antd';
 import { NavLink } from 'react-router-dom';
 import {
@@ -13,9 +13,8 @@ import {
   isAuthUserSelector,
   getUserSelector,
   logoutUserSuccess,
+  getUserToken,
 } from '../../redux-slices/UserSlice';
-
-import banner from '../../assets/banner.svg';
 
 const { Header } = Layout;
 function Navbar() {
@@ -23,6 +22,11 @@ function Navbar() {
   const userLogin = useSelector(getUserSelector);
   const isAuthorization = useSelector(isAuthUserSelector);
 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      dispatch(getUserToken());
+    }
+  }, []);
   return (
     <>
       <Header className="header">
