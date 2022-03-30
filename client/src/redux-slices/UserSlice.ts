@@ -58,10 +58,8 @@ export const Login = (email: string, password: string) => async (dispatch: AppDi
       email,
       password,
     });
-    dispatch(loginUserSuccess({ email, password }));
-    // dispatch(loginUserSuccess(response.data.user));
 
-    console.log(response.data);
+    dispatch(loginUserSuccess(response.data.user));
 
     localStorage.setItem('token', response.data.token);
   } catch (error: any) {}
@@ -74,6 +72,7 @@ export const getUserToken = () => async (dispatch: AppDispatch) => {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
     dispatch(loginUserSuccess(response.data.user));
+    console.log(response.data.user);
 
     localStorage.setItem('token', response.data.token);
   } catch (error: any) {

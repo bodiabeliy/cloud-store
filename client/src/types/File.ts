@@ -3,4 +3,5 @@ export default interface File {
   type: string;
   children?: any[];
   size?: number;
+  date?: Date;
 }

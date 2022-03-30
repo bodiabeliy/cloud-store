@@ -19,16 +19,6 @@ const FileList = () => {
     dispatch(getFiles());
   }, []);
 
-  const [data, setData] = useState([]);
-
-  const appendData = () => {
-    setData(data);
-  };
-
-  useEffect(() => {
-    appendData();
-  }, []);
-
   return (
     <>
       <List>
@@ -42,7 +32,7 @@ const FileList = () => {
                     {file.type == 'dir' ? file.name : file.name + '.' + file.type}
                   </Link>
                 }
-                description={file.type == 'dir' ? 'Файлов:' + file.children?.length : file.size}
+                description={file.type == 'dir' ? 'Файлов:' + file.children.length : file.size}
               />
               <Button type="primary" icon={<DeleteOutlined />} shape="circle" size="large"></Button>
             </List.Item>

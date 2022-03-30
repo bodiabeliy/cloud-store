@@ -15,6 +15,7 @@ const initialState: FileState = {
     type: '',
     children: [],
     size: 0,
+    date: null,
   },
 };
 

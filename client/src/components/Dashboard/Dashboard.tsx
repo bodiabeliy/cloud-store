@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { getUserToken, isAuthUserSelector } from '../../redux-slices/UserSlice';
-import { getFiles } from '../../redux-slices/FileSlice ';
+import { getFiles, getFilesSelector } from '../../redux-slices/FileSlice ';
 
 import DiskArea from '../DiskArea/DiskArea';
 
@@ -19,13 +19,13 @@ import banner from '../../assets/banner.png';
 import './styles.scss';
 import Navbar from '../Navbar/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
-import Title from 'antd/lib/typography/Title';
 
 const { Content, Sider } = Layout;
 
 function Dashboard() {
   const dispatch = useDispatch();
   const isAuthorization = useSelector(isAuthUserSelector);
+  const files = useSelector(getFilesSelector);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -54,10 +54,12 @@ function Dashboard() {
         <Layout className="site-layout">
           {isAuthorization == true ? (
             <Content>
-              <div className="files__list">
-                <Empty description="Список файлов и папок пустой" image={emptyList}>
+              <div className="files__list" style={{ marginRight: '15px' }}>
+                {files.length ? (
                   <DiskArea />
-                </Empty>
+                ) : (
+                  <Empty description="Список файлов и папок пустой" image={emptyList}></Empty>
+                )}
               </div>
             </Content>
           ) : (
