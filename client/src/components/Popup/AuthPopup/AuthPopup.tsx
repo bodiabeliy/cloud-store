@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Login } from '../../../redux-slices/UserSlice';
 import { useHistory } from 'react-router-dom';
 
@@ -20,6 +20,12 @@ function AuthPopup() {
     setIsModalVisible(false);
     route.push('/');
   };
+
+  const logIn = useCallback(() => {
+    dispatch(Login(email, password));
+    setIsModalVisible(false);
+    route.push('/');
+  }, [dispatch, email, password]);
   return (
     <>
       <Modal title="Авторизация" visible={isModalVisible} onCancel={handleCancel}>
@@ -57,11 +63,7 @@ function AuthPopup() {
             placeholder="Введите пароль пользователя"
           />
         </Form.Item>
-        <RegistryBtn
-          type="primary"
-          description="Авторизация"
-          submitForm={() => dispatch(Login(email, password))}
-        />
+        <RegistryBtn type="primary" description="Авторизация" submitForm={logIn} />
       </Modal>
     </>
   );

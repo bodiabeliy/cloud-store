@@ -75,7 +75,6 @@ export const getUserToken = () => async (dispatch: AppDispatch) => {
     });
     dispatch(loginUserSuccess(response.data.user));
 
-    console.log(response.data.user);
     localStorage.setItem('token', response.data.token);
   } catch (error: any) {
     localStorage.removeItem('token');

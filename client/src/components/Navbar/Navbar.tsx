@@ -27,6 +27,11 @@ function Navbar() {
       dispatch(getUserToken());
     }
   }, []);
+
+  const logOut = () => {
+    dispatch(logoutUserSuccess());
+    localStorage.removeItem('token');
+  };
   return (
     <>
       <Header className="header">
@@ -40,7 +45,7 @@ function Navbar() {
             {isAuthorization == false ? (
               <NavLink to={'/login'}>Войти</NavLink>
             ) : (
-              <NavLink to={'/'} onClick={() => dispatch(logoutUserSuccess())}>
+              <NavLink to={'/'} onClick={logOut}>
                 Выйти
               </NavLink>
             )}

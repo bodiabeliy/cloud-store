@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { getUserToken, isAuthUserSelector } from '../../redux-slices/UserSlice';
 import { getFiles } from '../../redux-slices/FileSlice ';
 
-import emptyList from '../../assets/empty.svg';
-import banner from '../../assets/banner.png';
+import DiskArea from '../DiskArea/DiskArea';
 
 import { Layout, Menu, Empty } from 'antd';
 import {
@@ -13,6 +12,9 @@ import {
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+
+import emptyList from '../../assets/empty.svg';
+import banner from '../../assets/banner.png';
 
 import './styles.scss';
 import Navbar from '../Navbar/Navbar';
@@ -52,7 +54,11 @@ function Dashboard() {
         <Layout className="site-layout">
           {isAuthorization == true ? (
             <Content>
-              <Empty description="Список файлов и папок пустой" image={emptyList}></Empty>
+              <div className="files__list">
+                <Empty description="Список файлов и папок пустой" image={emptyList}>
+                  <DiskArea />
+                </Empty>
+              </div>
             </Content>
           ) : (
             <Content>

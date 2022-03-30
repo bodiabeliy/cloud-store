@@ -2,4 +2,6 @@ export enum ROUTE_NAME {
   HOME = '/',
   REGISTRATION = '/registration',
   LOGIN = '/login',
+  DISK_AREA = '/disk',
+  CURRENT_FOLDER = '/folder',
 }
