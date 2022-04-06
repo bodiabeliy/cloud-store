@@ -1,9 +1,13 @@
 const FileService = require("../services/fileService")
 const User = require("../models/User")
 const File = require("../models/File")
+const path = require('path');
 
 const config  = require("config")
+
 const jwt = require("jsonwebtoken")
+
+const {UploadFiles} = require("../s3")
 
 class FileController {
 
@@ -12,24 +16,27 @@ class FileController {
         try {
             const {name, type, parent} = request.body
             const creatingFile = new File({name, type, parent, user:request.user.id})
-
+            
             // определяем имеет ли созданный файл родителя
             const parentFile = await File.findOne({_id:parent})
             if (!parentFile) {
+               
                 creatingFile.path = name
                 await FileService.createDir(creatingFile)
             }
             else {
-                creatingFile.path = `${parentFile.path}\\${creatingFile.name}`
+                creatingFile.path = `${parentFile.path}/${creatingFile.name}`
                 await FileService.createDir(creatingFile)
                 parentFile.children.push(creatingFile._id)
                 await parentFile.save()
             }
             await creatingFile.save()
+            await UploadFiles(creatingFile)
+
             return response.json(creatingFile)
             
         } catch (error) {
-            console.log(error);
+            console.log('error block');
             return response.status(400).json(error)
         }
     }
@@ -49,8 +56,9 @@ class FileController {
             request.user = decoded
             next()
         } catch (error) {
-            return response.status(400).json({message: "token failed!"})
+            return response.status(400).json({message: request.user})
         }
+        console.log(request.user);
     }
     // получаем все файлы польователя
     async getFiles (request, response) {

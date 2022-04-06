@@ -72,11 +72,11 @@ export const getUserToken = () => async (dispatch: AppDispatch) => {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
     dispatch(loginUserSuccess(response.data.user));
-    console.log(response.data.user);
+    // console.log(response.data.user);
 
     localStorage.setItem('token', response.data.token);
   } catch (error: any) {
-    localStorage.removeItem('token');
+    // localStorage.removeItem('token');
   }
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { getUserToken, isAuthUserSelector } from '../../redux-slices/UserSlice';
-import { getFiles, getFilesSelector } from '../../redux-slices/FileSlice ';
+import { getFiles, getFilesSelector, getFolderSelector } from '../../redux-slices/FileSlice ';
 
 import DiskArea from '../DiskArea/DiskArea';
 

@@ -26,10 +26,15 @@ export const fileSlice = createSlice({
     getUserFilesSuccess: (state, action: PayloadAction<File[]>) => {
       state.files = action.payload;
     },
+
+    getUserFileSuccess: (state, action: PayloadAction<File>) => {
+      state.currentFolder.name = action.payload.name;
+      state.currentFolder.type = action.payload.type;
+    },
   },
 });
 
-export const { getUserFilesSuccess } = fileSlice.actions;
+export const { getUserFilesSuccess, getUserFileSuccess } = fileSlice.actions;
 
 export const getFolderSelector = (state: RootState) => state.file.currentFolder;
 export const getFilesSelector = (state: RootState) => state.file.files;
@@ -46,7 +51,18 @@ export const getFiles = () => async (dispatch: AppDispatch) => {
   }
 };
 
-export const getSingleVisit =
-  (id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {};
+export const CreateFolder = (name) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  try {
+    const response = await api.post(`/files`, {
+      name,
+      type: 'dir',
+      parent: '',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    dispatch(getUserFileSuccess(response.data));
+  } catch (error: any) {}
+};
 
 export default fileSlice.reducer;

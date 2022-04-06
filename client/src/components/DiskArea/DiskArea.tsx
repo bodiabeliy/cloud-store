@@ -5,35 +5,33 @@ import { getFilesSelector } from '../../redux-slices/FileSlice ';
 import FileList from '../DiskArea/FileList/FileList';
 import bytesToSize from '../../utils/SizingCalculate';
 import { getUserSelector } from '../../redux-slices/UserSlice';
-const tabList = [
-  {
-    key: 'total',
-    tab: 'Общий размер',
-  },
-  {
-    key: 'used',
-    tab: 'Использовано:',
-  },
-];
 
-const totalSize = 10737418240;
-const contentList = {
-  total: (
-    <span>
-      Хранилище: <b>{bytesToSize(totalSize)}</b>
-    </span>
-  ),
-  used: <b>{bytesToSize(0)}</b>,
-};
 const DiskArea = () => {
+  const tabList = [
+    {
+      key: 'total',
+      tab: 'Общий размер',
+    },
+    {
+      key: 'used',
+      tab: 'Использовано:',
+    },
+  ];
+
+  const totalSize = 10737418240;
+  const contentList = {
+    total: (
+      <span>
+        Хранилище: <b>{bytesToSize(totalSize)}</b>
+      </span>
+    ),
+    used: <b>{bytesToSize(0)}</b>,
+  };
   const [activeTabKey1, setActiveTabKey1] = useState('total');
 
   const onTab1Change = (key) => {
     setActiveTabKey1(key);
   };
-
-  const files = useSelector(getFilesSelector);
-  console.log(files.length);
 
   useEffect(() => {
     bytesToSize(totalSize);
@@ -51,7 +49,6 @@ const DiskArea = () => {
       >
         {contentList[activeTabKey1]}
       </Card>
-      Загружено: {files.length}
       <FileList></FileList>
     </>
   );
