@@ -12,6 +12,7 @@ const initialState: UserState = {
   currentUser: {
     email: '',
     password: '',
+    totalSize: 0,
   },
   isAuth: false,
 };
@@ -23,6 +24,7 @@ export const userSlice = createSlice({
     loginUserSuccess: (state, action: PayloadAction<User>) => {
       state.currentUser.email = action.payload.email;
       state.currentUser.password = action.payload.password;
+      state.currentUser.totalSize = action.payload.totalSize;
       state.isAuth = true;
     },
     logoutUserSuccess: (state) => {

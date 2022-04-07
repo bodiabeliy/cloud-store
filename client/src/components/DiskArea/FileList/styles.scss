@@ -1,3 +1,5 @@
+@import "../../../styles/mixins/index.scss";
+
 .ant-list-item-meta-avatar {
     height: 55px;
     span {
@@ -5,6 +7,16 @@
         height: 100%;
     }
 }
+.ant-row.ant-form-item {
+    flex-direction: column !important;
+}
 .ant-list-item-meta-content {
     flex: 0 0;
+}
+.ant-card-body {
+    width: 100%;
+}
+
+.action-field {
+    @include mobile_filelist()
 }

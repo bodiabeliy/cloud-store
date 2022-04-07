@@ -11,10 +11,9 @@ class FileService {
     createDir(file) {
 
         // создание пути  для файла (путь к домашей папке\имя пользователя\относительный путь)
-        const filePath = `${config.get('filePath')}\\${file.user}\\${file.path}`
         return new Promise((resolve, reject) => {
             try {
-                
+                let filePath = `${config.get('filePath')}\\${file.user}\\${file.path}`
                 // если нет папки
                 if (!fs.existsSync(filePath)) {
                     fs.mkdir(path.join(filePath, ''),

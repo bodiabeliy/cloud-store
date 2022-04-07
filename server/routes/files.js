@@ -3,7 +3,7 @@ const filesRouter = new Router()
 
 const fileController = require("../controllers/fileController")
 
-filesRouter.post('', fileController.getUserToken,  fileController.createDir )
+filesRouter.post('', fileController.getUserToken,  fileController.createFiles )
 filesRouter.get('',  fileController.getUserToken, fileController.getFiles)
 
 

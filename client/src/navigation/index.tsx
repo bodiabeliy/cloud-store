@@ -1,12 +1,13 @@
 import { FC } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import NavigationLayout from '../components/Dashboard/Dashboard';
+import NavigationLayout from '../pages/Dashboard/Dashboard';
+
 import RegitryPopup from '../components/Popup/RegistryPopup/RegistryPopup';
 import AuthPopup from '../components/Popup/AuthPopup/AuthPopup';
+import CreateFolderPopup from '../components/Popup/CreateFolderPopup/CreateFolderPopup';
 
 import DiskArea from '../components/DiskArea/DiskArea';
 import CurrentFile from '../components/DiskArea/CurrentFile/CurrentFile';
-
 import { ROUTE_NAME } from './routeNames';
 import { useSelector } from 'react-redux';
 import { isAuthUserSelector } from '../redux-slices/UserSlice';
@@ -30,6 +31,9 @@ const Navigator: FC = () => {
       </Switch>
       <Switch>
         <Route path={ROUTE_NAME.CURRENT_FOLDER} component={CurrentFile} exact={true} />
+      </Switch>
+      <Switch>
+        <Route path={ROUTE_NAME.CREATE_FOLDER} component={CreateFolderPopup} exact={true} />
       </Switch>
       <Redirect to={'/'}></Redirect>
     </BrowserRouter>

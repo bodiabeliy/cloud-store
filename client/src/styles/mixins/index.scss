@@ -8,10 +8,12 @@
     }
 }
 
-@mixin desktop_logo(){
-    @media screen and (min-width: 767px){
-      height: 30vh;
-      width: 30%;
-    }
+@mixin mobile_filelist(){
+  @media screen and (max-width: 766px){
+    display: flex;
+    justify-content: space-between;
+  }
 }
+
+
 

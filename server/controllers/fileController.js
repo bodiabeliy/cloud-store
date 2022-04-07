@@ -12,17 +12,19 @@ const {UploadFiles} = require("../s3")
 class FileController {
 
     //
-    async createDir(request, response) {
+    async createFiles(request, response) {
         try {
             const {name, type, parent} = request.body
             const creatingFile = new File({name, type, parent, user:request.user.id})
-            
             // определяем имеет ли созданный файл родителя
             const parentFile = await File.findOne({_id:parent})
+
             if (!parentFile) {
                
                 creatingFile.path = name
                 await FileService.createDir(creatingFile)
+                await UploadFiles(creatingFile)
+
             }
             else {
                 creatingFile.path = `${parentFile.path}/${creatingFile.name}`
@@ -31,7 +33,6 @@ class FileController {
                 await parentFile.save()
             }
             await creatingFile.save()
-            await UploadFiles(creatingFile)
 
             return response.json(creatingFile)
             
@@ -58,7 +59,6 @@ class FileController {
         } catch (error) {
             return response.status(400).json({message: request.user})
         }
-        console.log(request.user);
     }
     // получаем все файлы польователя
     async getFiles (request, response) {

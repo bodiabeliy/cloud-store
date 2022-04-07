@@ -19,7 +19,8 @@
         .ant-empty-image {
             @include mobile_image()
         } img {
-            @include desktop_logo()
+            height: 100%;
+            width: 100%;
         }
     }
 }

@@ -5,64 +5,81 @@ import File from '../types/File';
 
 interface FileState {
   files: File[];
-  currentFolder: File;
+  currentFolder: any;
+  isLoading: boolean;
 }
 
 const initialState: FileState = {
   files: [],
-  currentFolder: {
-    name: '',
-    type: '',
-    children: [],
-    size: 0,
-    date: null,
-  },
+  currentFolder: 0,
+  isLoading: true,
 };
 
 export const fileSlice = createSlice({
   name: 'files',
   initialState,
   reducers: {
+    getUserFilesStart: (state) => {
+      state.isLoading = true;
+    },
     getUserFilesSuccess: (state, action: PayloadAction<File[]>) => {
       state.files = action.payload;
+      state.isLoading = false;
     },
 
-    getUserFileSuccess: (state, action: PayloadAction<File>) => {
-      state.currentFolder.name = action.payload.name;
-      state.currentFolder.type = action.payload.type;
+    createUserFilesStart: (state) => {
+      state.isLoading = true;
+    },
+    createUserFilesSuccess: (state, action: PayloadAction<File[]>) => {
+      state.files = action.payload;
+      state.isLoading = false;
     },
   },
 });
 
-export const { getUserFilesSuccess, getUserFileSuccess } = fileSlice.actions;
+export const {
+  getUserFilesStart,
+  getUserFilesSuccess,
+  createUserFilesStart,
+  createUserFilesSuccess,
+} = fileSlice.actions;
 
 export const getFolderSelector = (state: RootState) => state.file.currentFolder;
 export const getFilesSelector = (state: RootState) => state.file.files;
+export const isFilesLoadingSelector = (state: RootState) => state.file.isLoading;
 
 // Thunk actions
 export const getFiles = () => async (dispatch: AppDispatch) => {
   try {
-    const response = await api.get(`/files`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    });
-    dispatch(getUserFilesSuccess(response.data));
+    dispatch(getUserFilesStart());
+    setTimeout(async () => {
+      const response = await api.get(`/files`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      dispatch(getUserFilesSuccess(response.data));
+    }, 1500);
   } catch (error: any) {
-    alert(error);
+    console.log('file error');
   }
 };
 
-export const CreateFolder = (name) => async (dispatch: AppDispatch, getState: () => RootState) => {
+export const createFiles = (name: string) => async (dispatch: AppDispatch) => {
   try {
-    const response = await api.post(`/files`, {
-      name,
-      type: 'dir',
-      parent: '',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+    dispatch(createUserFilesStart());
+    const response = await api.post(
+      `/files`,
+      {
+        name,
+        type: 'dir',
       },
-    });
-    dispatch(getUserFileSuccess(response.data));
-  } catch (error: any) {}
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      }
+    );
+    dispatch(getUserFilesSuccess(response.data));
+  } catch (error: any) {
+    console.log('file error');
+  }
 };
 
 export default fileSlice.reducer;

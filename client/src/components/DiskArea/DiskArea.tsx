@@ -7,6 +7,8 @@ import bytesToSize from '../../utils/SizingCalculate';
 import { getUserSelector } from '../../redux-slices/UserSlice';
 
 const DiskArea = () => {
+  const user = useSelector(getUserSelector);
+
   const tabList = [
     {
       key: 'total',
