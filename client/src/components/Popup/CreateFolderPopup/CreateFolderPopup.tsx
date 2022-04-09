@@ -1,25 +1,28 @@
 import React, { useCallback, useState } from 'react';
-import { createFiles } from '../../../redux-slices/FileSlice ';
+import { createFiles, getFolderSelector } from '../../../redux-slices/FileSlice ';
 import { useHistory } from 'react-router-dom';
 
 import '../index.scss';
 import { Modal, Form } from 'antd';
 import InputField from '../../Input/input';
 import RegistryBtn from '../../Button/Button';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function CreateFolderPopup() {
   const dispatch = useDispatch();
   const route = useHistory();
+
+  const folder = useSelector(getFolderSelector);
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [folderName, setFolderName] = useState('');
+
   const handleCancel = () => {
     setIsModalVisible(false);
     route.push('/');
   };
 
   const CreateFolder = () => {
-    dispatch(createFiles(folderName));
+    dispatch(createFiles(folder._id, folderName));
     setIsModalVisible(false);
     route.push('/');
   };

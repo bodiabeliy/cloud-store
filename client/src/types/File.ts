@@ -1,5 +1,5 @@
 export default interface File {
-  _id: number;
+  _id: any;
   name: string;
   type: string;
   children?: any[];

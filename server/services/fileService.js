@@ -34,6 +34,22 @@ class FileService {
         })
     }
 
+    // получение пути до удаляемоно файла
+    getPath(file) {
+        return config.get('filePath') + '\\' + file.user + '\\' + file.path
+    }
+
+    // удаление файла
+    deleteFile(file) {
+        const path = this.getPath(file)
+        if (file.type === "dir") {
+            fs.rmdirSync(path)
+        }
+        else {
+            fs.unlinkSync(path)
+        }
+    }
+
 }
 
 module.exports = new FileService()

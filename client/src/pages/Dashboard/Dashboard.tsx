@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
 import { getUserToken, isAuthUserSelector } from '../../redux-slices/UserSlice';
-import { getFiles, getFilesSelector, getFolderSelector } from '../../redux-slices/FileSlice ';
+import {
+  getFile,
+  getFiles,
+  getFilesSelector,
+  getFolderSelector,
+} from '../../redux-slices/FileSlice ';
 
 import DiskArea from '../../components/DiskArea/DiskArea';
 
@@ -24,10 +29,13 @@ const { Content, Sider } = Layout;
 
 function Dashboard() {
   const dispatch = useDispatch();
+  let isCollapsed = false;
   const isAuthorization = useSelector(isAuthUserSelector);
   const files = useSelector(getFilesSelector);
-  const folderId = useSelector(getFolderSelector);
 
+  const Collapse = () => {
+    isCollapsed = !isCollapsed;
+  };
   useEffect(() => {
     if (localStorage.getItem('token')) {
       console.log(localStorage.getItem('token'));
@@ -44,7 +52,7 @@ function Dashboard() {
     <>
       <Navbar></Navbar>
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible>
+        <Sider collapsible onCollapse={Collapse}>
           <Menu theme="dark" defaultSelectedKeys={['1']}>
             <Menu.Item key="1">Option 1</Menu.Item>
             <Menu.Item key="2">Option 2</Menu.Item>
@@ -65,7 +73,12 @@ function Dashboard() {
             </Content>
           ) : (
             <Content>
-              <Empty style={{ margin: 0 }} description={''} image={banner}></Empty>
+              <Empty
+                className="files__empty"
+                style={{ margin: 0 }}
+                description={''}
+                image={banner}
+              ></Empty>
             </Content>
           )}
         </Layout>

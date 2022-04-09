@@ -7,9 +7,11 @@ import {
   getFilesSelector,
   getFolderSelector,
   isFilesLoadingSelector,
+  getFile,
+  deleteFile,
 } from '../../../redux-slices/FileSlice ';
 
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 
 import './styles.scss';
 import Folder from '../../../assets/folder.png';
@@ -25,11 +27,13 @@ const FileList = () => {
   const preloading = useSelector(isFilesLoadingSelector);
   const dispatch = useDispatch();
 
-  console.log(preloading);
+  const OpenFile = (folderId) => {
+    dispatch(getFile(folderId));
+  };
 
-  useEffect(() => {
-    dispatch(getFiles());
-  }, [folder]);
+  const deleteCurrentFile = () => {
+    dispatch(deleteFile(folder));
+  };
 
   const newFolder = () => {
     router.push('/create-folder');
@@ -60,7 +64,7 @@ const FileList = () => {
           <List>
             <VirtualList data={files} itemHeight={47} itemKey="files">
               {(file) => (
-                <List.Item key={file.name}>
+                <List.Item key={file.name} onClick={() => OpenFile(file._id)}>
                   <List.Item.Meta
                     avatar={<Avatar src={file.type == 'dir' ? Folder : Files} />}
                     title={
@@ -71,6 +75,7 @@ const FileList = () => {
                     description={file.type == 'dir' ? 'Файлов:' + file.children.length : file.size}
                   />
                   <Button
+                    onClick={deleteCurrentFile}
                     type="primary"
                     icon={<DeleteOutlined />}
                     shape="circle"

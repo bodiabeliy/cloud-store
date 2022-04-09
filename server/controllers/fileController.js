@@ -69,6 +69,28 @@ class FileController {
             return response.status(500).json(error)
         }
     }
+    // получаемтекущий файл пользователя
+    async getFile (request, response) {
+        try {
+            const file = await File.findOne({  user:request.user.id, _id:request.query.id})
+            if (!file) return res.status(400).json({message: "file not found!"})
+           
+            return response.json(file)
+        } catch (error) {
+            return response.status(500).json(error)
+        }
+    }
+    async deleteFile (request, response) {
+        try {
+            const file = await File.findOne({  user:request.user.id, _id:request.query.id})
+            if (!file) return res.status(400).json({message: "file not found!"})
+           FileService.deleteFile(file)
+           await file.remove()
+            return response.json({message: "file was deleted successfully!"})
+        } catch (error) {
+            return response.status(400).json({message: "Folder must be empty!"})
+        }
+    }
 }
 
 module.exports = new FileController()
