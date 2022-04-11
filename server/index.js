@@ -4,8 +4,13 @@ const mogoose = require("mongoose")
 const config  = require("config")
 const authRouter = require("./routes/authorization")
 const fileRouter = require("./routes/files")
+const fileUpload = require("express-fileupload")
 
 const app = express()
+
+//
+app.use(fileUpload({}))
+
 // прослойка для передачи запросов на все домены
 app.use(cors({
     origin: '*',
@@ -14,8 +19,10 @@ app.use(cors({
 
 app.use(express.json())
 
+//маршуты
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
+
 
 
 const PORT = config.get("ServerPort")

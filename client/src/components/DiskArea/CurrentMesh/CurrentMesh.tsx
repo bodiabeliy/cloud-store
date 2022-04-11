@@ -17,8 +17,8 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
   const router = useHistory();
 
   const OpenFile = (folderId) => {
-    dispatch(getFile(folderId));
-    router.push('/folder');
+    // dispatch(getFile(folderId));
+    // router.push('/information');
   };
 
   const deleteCurrentFile = (folderId) => {
@@ -50,6 +50,7 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
         }
       />
       <Button
+        style={{ marginRight: '15px' }}
         onClick={() => deleteCurrentFile(props.currentFile._id)}
         type="primary"
         icon={<DeleteOutlined />}

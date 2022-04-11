@@ -4,18 +4,22 @@ const File = require("../models/File")
 const path = require('path');
 
 const config  = require("config")
-
+const fs = require("fs")
+const fs_extra  = require("fs-extra")
 const jwt = require("jsonwebtoken")
 
 const {UploadFiles} = require("../s3")
 
 class FileController {
 
-    //
+    // создание файлов
     async createFiles(request, response) {
         try {
             const {name, type, parent} = request.body
+
+            //
             const creatingFile = new File({name, type, parent, user:request.user.id})
+
             // определяем имеет ли созданный файл родителя
             const parentFile = await File.findOne({_id:parent})
 
@@ -63,15 +67,18 @@ class FileController {
     // получаем все файлы польователя
     async getFiles (request, response) {
         try {
+            //
             const files = await File.find({  user:request.user.id, parent: request.query.parent})
             return response.json(files)
         } catch (error) {
             return response.status(500).json(error)
         }
     }
+
     // получаемтекущий файл пользователя
     async getFile (request, response) {
         try {
+            //
             const file = await File.findOne({  user:request.user.id, _id:request.query.id})
             if (!file) return res.status(400).json({message: "file not found!"})
            
@@ -80,15 +87,77 @@ class FileController {
             return response.status(500).json(error)
         }
     }
+
+    // удаление файла
     async deleteFile (request, response) {
         try {
+            //
             const file = await File.findOne({  user:request.user.id, _id:request.query.id})
+
             if (!file) return res.status(400).json({message: "file not found!"})
+
+            //
            FileService.deleteFile(file)
            await file.remove()
             return response.json({message: "file was deleted successfully!"})
         } catch (error) {
             return response.status(400).json({message: "Folder must be empty!"})
+        }
+    }
+
+    // загрузка файла
+    async uploadFile (request, response) {
+        console.log('upload',request.files);
+        try {
+            const file = request.files.file
+            //
+            const parent = await File.findOne({user:request.user.id, _id:request.body.parent})
+
+            //
+            const user = await User.findOne({_id: request.user.id})
+
+            //
+            if (user.userSpace + file.size > user.diskSpace ) {
+                return response.status(400).json({message:""})
+            }
+            
+            user.userSpace = user.userSpace + file.size
+
+            //
+            let pathUpload
+            if (parent) {
+                pathUpload = `${config.get('filepath')}\\${user._id}\\${parent.path}\\${file.name}`
+            }
+            else {
+                pathUpload = `${config.get('filePath')}\\${user._id}\\${file.name}`
+            }
+
+            //
+            if (fs.existsSync(pathUpload)) {
+                return response.status(400).json({message: "file already exist!"})
+            }
+
+            //
+            file.mv(pathUpload)
+
+            const type = file.name.split('.').pop()
+
+            //
+            const dbFile = new File({
+                name: file.name,
+                type,
+                size:file.size,
+                path: parent?.pathUpload,
+                parent: parent?._id,
+                user:user._id
+            })
+
+            await dbFile.save()
+            await user.save()
+
+            response.json(dbFile)
+        } catch (error) {
+            return response.status(400).json({message:"Upload error!"})
         }
     }
 }

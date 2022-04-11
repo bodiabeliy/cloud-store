@@ -32,7 +32,7 @@ const Navigator: FC = () => {
         <Route path={ROUTE_NAME.DISK_AREA} component={DiskArea} exact={true} />
       </Switch>
       <Switch>
-        <Route path={ROUTE_NAME.CURRENT_FOLDER} component={MeshDetailze} exact={true} />
+        <Route path={ROUTE_NAME.DETAILIZE_FOLDER} component={MeshDetailze} exact={true} />
       </Switch>
       <Switch>
         <Route path={ROUTE_NAME.CREATE_FOLDER} component={CreateFolderPopup} exact={true} />
