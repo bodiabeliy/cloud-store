@@ -16,6 +16,9 @@
 .ant-card-body {
     width: 100%;
 }
+.ant-modal-confirm-title span:nth-child(2) {
+    color: #1890ff !important;
+}
 
 .action-field {
     @include mobile_filelist()

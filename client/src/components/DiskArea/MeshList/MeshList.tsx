@@ -13,7 +13,7 @@ import {
 } from '../../../redux-slices/FileSlice ';
 
 import CurrentFile from '../CurrentMesh/CurrentMesh';
-
+import DeleteModal from '../../Popup/DeletePopup/DeletePopup';
 import './styles.scss';
 
 import Preloader from '../../Preloader/Preloader';

@@ -1,5 +1,5 @@
-import { DeleteOutlined } from '@ant-design/icons';
-import { Avatar, Button, List } from 'antd';
+import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Avatar, Button, List, Modal } from 'antd';
 import React, { FC } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -14,17 +14,37 @@ interface FileProps {
 
 const CurrentMesh: FC<FileProps> = (props: any) => {
   const dispatch = useDispatch();
+  const { confirm } = Modal;
+
   const router = useHistory();
 
   const OpenFile = (folderId) => {
-    // dispatch(getFile(folderId));
-    // router.push('/information');
+    dispatch(getFile(folderId));
+    router.push('/information');
   };
 
-  const deleteCurrentFile = (folderId) => {
-    console.log(folderId);
-
-    dispatch(deleteFile(folderId));
+  const deleteCurrentFile = (file) => {
+    confirm({
+      title: (
+        <>
+          <span> Meш </span>
+          <span className="deleteTitle">{file.name}</span>
+          <span> будет безвозвратно удален!</span>
+        </>
+      ),
+      icon: <ExclamationCircleOutlined />,
+      content: 'Потвердить действие?',
+      okText: 'Да',
+      okType: 'danger',
+      okButtonProps: {
+        disabled: false,
+      },
+      cancelText: 'Нет',
+      onOk() {
+        dispatch(deleteFile(file._id));
+      },
+      onCancel() {},
+    });
   };
 
   return (
@@ -51,7 +71,7 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
       />
       <Button
         style={{ marginRight: '15px' }}
-        onClick={() => deleteCurrentFile(props.currentFile._id)}
+        onClick={() => deleteCurrentFile(props.currentFile)}
         type="primary"
         icon={<DeleteOutlined />}
         shape="circle"
