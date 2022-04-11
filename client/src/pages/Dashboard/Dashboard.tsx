@@ -29,13 +29,9 @@ const { Content, Sider } = Layout;
 
 function Dashboard() {
   const dispatch = useDispatch();
-  let isCollapsed = false;
   const isAuthorization = useSelector(isAuthUserSelector);
   const files = useSelector(getFilesSelector);
 
-  const Collapse = () => {
-    isCollapsed = !isCollapsed;
-  };
   useEffect(() => {
     if (localStorage.getItem('token')) {
       console.log(localStorage.getItem('token'));
@@ -52,7 +48,7 @@ function Dashboard() {
     <>
       <Navbar></Navbar>
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible onCollapse={Collapse}>
+        <Sider collapsible>
           <Menu theme="dark" defaultSelectedKeys={['1']}>
             <Menu.Item key="1">Option 1</Menu.Item>
             <Menu.Item key="2">Option 2</Menu.Item>
@@ -63,22 +59,15 @@ function Dashboard() {
         <Layout className="site-layout">
           {isAuthorization == true ? (
             <Content>
-              <div className="files__list" style={{ marginRight: '15px' }}>
-                {files.length ? (
-                  <DiskArea />
-                ) : (
-                  <Empty description="Список файлов и папок пустой" image={emptyList}></Empty>
-                )}
-              </div>
+              {files.length ? (
+                <DiskArea />
+              ) : (
+                <Empty description="Список файлов и папок пустой" image={emptyList}></Empty>
+              )}
             </Content>
           ) : (
             <Content>
-              <Empty
-                className="files__empty"
-                style={{ margin: 0 }}
-                description={''}
-                image={banner}
-              ></Empty>
+              <Empty style={{ margin: 0 }} description={''} image={banner}></Empty>
             </Content>
           )}
         </Layout>

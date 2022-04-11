@@ -76,6 +76,8 @@ export const getFiles = () => async (dispatch: AppDispatch) => {
   }
 };
 export const getFile = (fileId) => async (dispatch: AppDispatch) => {
+  // console.log('get single', fileId);
+
   try {
     setTimeout(async () => {
       const response = await api.get(`/files?id=${fileId}`, {
@@ -88,14 +90,14 @@ export const getFile = (fileId) => async (dispatch: AppDispatch) => {
   }
 };
 
-export const deleteFile = (file) => async (dispatch: AppDispatch) => {
+export const deleteFile = (FileId) => async (dispatch: AppDispatch) => {
   try {
     setTimeout(async () => {
-      const response = await api.delete(`/files?id=${file._id}`, {
+      const response = await api.delete(`/files?id=${FileId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
 
-      dispatch(deleteUserFileSuccess(file._id));
+      dispatch(deleteUserFileSuccess(FileId));
     }, 1500);
   } catch (error: any) {
     console.log('file error');
@@ -109,7 +111,6 @@ export const createFiles = (folderId: any, name: string) => async (dispatch: App
       `/files`,
       {
         name,
-        parent: folderId,
         type: 'dir',
       },
       {
@@ -117,7 +118,6 @@ export const createFiles = (folderId: any, name: string) => async (dispatch: App
       }
     );
     dispatch(getUserFilesSuccess(response.data));
-    dispatch(getUserFileSuccess(response.data));
   } catch (error: any) {
     console.log('file error');
   }

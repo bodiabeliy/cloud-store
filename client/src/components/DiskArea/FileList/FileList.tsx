@@ -31,8 +31,10 @@ const FileList = () => {
     dispatch(getFile(folderId));
   };
 
-  const deleteCurrentFile = () => {
-    dispatch(deleteFile(folder));
+  const deleteCurrentFile = (folderId) => {
+    console.log(folderId);
+
+    dispatch(deleteFile(folderId));
   };
 
   const newFolder = () => {
@@ -41,7 +43,7 @@ const FileList = () => {
   return (
     <>
       {preloading == true ? (
-        <Preloader></Preloader>
+        ''
       ) : (
         <>
           <Card title="" size="small" style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -75,7 +77,7 @@ const FileList = () => {
                     description={file.type == 'dir' ? 'Файлов:' + file.children.length : file.size}
                   />
                   <Button
-                    onClick={deleteCurrentFile}
+                    onClick={() => deleteCurrentFile(file._id)}
                     type="primary"
                     icon={<DeleteOutlined />}
                     shape="circle"
