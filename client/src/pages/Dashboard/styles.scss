@@ -1,6 +1,7 @@
 
 @import "../../styles/mixins/index.scss";
 
+//
 .ant-menu-item.ant-menu-item-selected.ant-menu-item-only-child {
     margin: 0;
 }
@@ -14,6 +15,17 @@
         width: 100%;
     }
 } 
+
+.ant-empty-description {
+    @include mobile_mainImageDescription()
+}
+
+// 
+.firstMesh {
+    margin-bottom: 30px;
+    @include mobile_mainImageBtn()
+}
+
 .files {
     &__list {
         .ant-empty-image {

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { List, Avatar, Button, Space, Card } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,31 +12,19 @@ import {
   deleteFile,
 } from '../../../redux-slices/FileSlice ';
 
-import { Link, useHistory, useParams } from 'react-router-dom';
+import CurrentFile from '../CurrentMesh/CurrentMesh';
 
 import './styles.scss';
-import Folder from '../../../assets/folder.png';
-import Files from '../../../assets/file.png';
+
 import Preloader from '../../Preloader/Preloader';
 
 import { DeleteOutlined, DownloadOutlined } from '@ant-design/icons';
 
-const FileList = () => {
+const MeshList = () => {
   const files = useSelector(getFilesSelector);
   const folder = useSelector(getFolderSelector);
   const router = useHistory();
   const preloading = useSelector(isFilesLoadingSelector);
-  const dispatch = useDispatch();
-
-  const OpenFile = (folderId) => {
-    dispatch(getFile(folderId));
-  };
-
-  const deleteCurrentFile = (folderId) => {
-    console.log(folderId);
-
-    dispatch(deleteFile(folderId));
-  };
 
   const newFolder = () => {
     router.push('/create-folder');
@@ -56,35 +45,16 @@ const FileList = () => {
                 size="middle"
                 onClick={newFolder}
               >
-                Новая папка
+                Создать меш
               </Button>
               <Button type="primary" shape="round" icon={<DownloadOutlined />} size="middle">
-                Download
+                Скачать
               </Button>
             </div>
           </Card>
           <List>
             <VirtualList data={files} itemHeight={47} itemKey="files">
-              {(file) => (
-                <List.Item key={file.name} onClick={() => OpenFile(file._id)}>
-                  <List.Item.Meta
-                    avatar={<Avatar src={file.type == 'dir' ? Folder : Files} />}
-                    title={
-                      <Link to={'/'}>
-                        {file.type == 'dir' ? file.name : file.name + '.' + file.type}
-                      </Link>
-                    }
-                    description={file.type == 'dir' ? 'Файлов:' + file.children.length : file.size}
-                  />
-                  <Button
-                    onClick={() => deleteCurrentFile(file._id)}
-                    type="primary"
-                    icon={<DeleteOutlined />}
-                    shape="circle"
-                    size="large"
-                  ></Button>
-                </List.Item>
-              )}
+              {(file) => <CurrentFile currentFile={file}></CurrentFile>}
             </VirtualList>
           </List>
         </>
@@ -93,4 +63,4 @@ const FileList = () => {
   );
 };
 
-export default FileList;
+export default MeshList;

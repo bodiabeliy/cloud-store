@@ -7,7 +7,9 @@ import AuthPopup from '../components/Popup/AuthPopup/AuthPopup';
 import CreateFolderPopup from '../components/Popup/CreateFolderPopup/CreateFolderPopup';
 
 import DiskArea from '../components/DiskArea/DiskArea';
-import CurrentFile from '../components/DiskArea/CurrentFile/CurrentFile';
+import CurrentMesh from '../components/DiskArea/CurrentMesh/CurrentMesh';
+import MeshDetailze from '../components/DiskArea/MeshDetailaze/MeshDetailaze';
+
 import { ROUTE_NAME } from './routeNames';
 import { useSelector } from 'react-redux';
 import { isAuthUserSelector } from '../redux-slices/UserSlice';
@@ -30,7 +32,7 @@ const Navigator: FC = () => {
         <Route path={ROUTE_NAME.DISK_AREA} component={DiskArea} exact={true} />
       </Switch>
       <Switch>
-        <Route path={ROUTE_NAME.CURRENT_FOLDER} component={CurrentFile} exact={true} />
+        <Route path={ROUTE_NAME.CURRENT_FOLDER} component={MeshDetailze} exact={true} />
       </Switch>
       <Switch>
         <Route path={ROUTE_NAME.CREATE_FOLDER} component={CreateFolderPopup} exact={true} />

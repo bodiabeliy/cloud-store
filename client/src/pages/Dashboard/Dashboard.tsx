@@ -9,7 +9,7 @@ import {
 
 import DiskArea from '../../components/DiskArea/DiskArea';
 
-import { Layout, Menu, Empty } from 'antd';
+import { Layout, Menu, Empty, Button } from 'antd';
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -24,11 +24,15 @@ import banner from '../../assets/banner.png';
 import './styles.scss';
 import Navbar from '../../components/Navbar/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
+import { url } from 'inspector';
+import { useHistory } from 'react-router-dom';
 
 const { Content, Sider } = Layout;
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const router = useHistory();
+
   const isAuthorization = useSelector(isAuthUserSelector);
   const files = useSelector(getFilesSelector);
 
@@ -44,6 +48,9 @@ function Dashboard() {
     }
   }, [isAuthorization]);
 
+  const newFolder = () => {
+    router.push('/create-folder');
+  };
   return (
     <>
       <Navbar></Navbar>
@@ -62,7 +69,11 @@ function Dashboard() {
               {files.length ? (
                 <DiskArea />
               ) : (
-                <Empty description="Список файлов и папок пустой" image={emptyList}></Empty>
+                <Empty description="Список ячеек (меш) пустой!" image={emptyList}>
+                  <Button type="primary" className="firstMesh" onClick={newFolder}>
+                    Создать первый меш
+                  </Button>
+                </Empty>
               )}
             </Content>
           ) : (
