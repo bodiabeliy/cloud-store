@@ -95,12 +95,13 @@ class FileController {
             const file = await File.findOne({  user:request.user.id, _id:request.query.id})
 
             if (!file) return res.status(400).json({message: "file not found!"})
-
+            console.log('delete file id =', file._id );
             //
            FileService.deleteFile(file)
            await file.remove()
             return response.json({message: "file was deleted successfully!"})
         } catch (error) {
+            console.log(error);
             return response.status(400).json({message: "Folder must be empty!"})
         }
     }
@@ -111,7 +112,7 @@ class FileController {
         try {
             const file = request.files.file
             //
-            const parent = await File.findOne({user:request.user.id, _id:request.body.parent})
+            // const parent = await File.findOne({user:request.user.id, _id:request.body.parent})
 
             //
             const user = await User.findOne({_id: request.user.id})
@@ -125,12 +126,10 @@ class FileController {
 
             //
             let pathUpload
-            if (parent) {
-                pathUpload = `${config.get('filepath')}\\${user._id}\\${parent.path}\\${file.name}`
-            }
-            else {
+            // if (parent) {
+            //     pathUpload = `${config.get('filepath')}\\${user._id}\\${parent.path}\\${file.name}`
+            // }
                 pathUpload = `${config.get('filePath')}\\${user._id}\\${file.name}`
-            }
 
             //
             if (fs.existsSync(pathUpload)) {
@@ -147,8 +146,7 @@ class FileController {
                 name: file.name,
                 type,
                 size:file.size,
-                path: parent?.pathUpload,
-                parent: parent?._id,
+                path: pathUpload,
                 user:user._id
             })
 

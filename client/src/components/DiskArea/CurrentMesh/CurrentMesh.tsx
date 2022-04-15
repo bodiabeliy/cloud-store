@@ -20,7 +20,7 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
 
   const OpenFile = (folderId) => {
     dispatch(getFile(folderId));
-    router.push('/information');
+    router.push('/upload');
   };
 
   const deleteCurrentFile = (file) => {
@@ -69,14 +69,16 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
             : props.currentFile.size
         }
       />
-      <Button
-        style={{ marginRight: '15px' }}
-        onClick={() => deleteCurrentFile(props.currentFile)}
-        type="primary"
-        icon={<DeleteOutlined />}
-        shape="circle"
-        size="large"
-      ></Button>
+      <div className="" onClick={(e) => e.stopPropagation()}>
+        <Button
+          style={{ marginRight: '15px' }}
+          onClick={() => deleteCurrentFile(props.currentFile)}
+          type="primary"
+          icon={<DeleteOutlined />}
+          shape="circle"
+          size="large"
+        ></Button>
+      </div>
     </List.Item>
   );
 };

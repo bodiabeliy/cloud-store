@@ -42,12 +42,8 @@ class FileService {
     // удаление файла
     deleteFile(file) {
         const path = this.getPath(file)
-        if (file.type === "dir") {
-            fs.rmdirSync(path)
-        }
-        else {
-            fs.unlinkSync(path)
-        }
+        fs.rmdirSync(path,{recursive:true})
+
     }
 
 }

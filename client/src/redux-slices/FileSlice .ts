@@ -123,4 +123,32 @@ export const createFiles = (folderId: any, name: string) => async (dispatch: App
   }
 };
 
+export const uploadFile = (file) => async (dispatch: AppDispatch) => {
+  try {
+    const formData = new FormData();
+    console.log(file);
+
+    formData.append('file', file);
+
+    dispatch(createUserFilesStart());
+    const response = await api.post(`/upload`, formData, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      onDownloadProgress: (progressEvent) => {
+        const totalLength = progressEvent.lengthComputable
+          ? progressEvent.total
+          : progressEvent.target.getResponseHeader('content-length') ||
+            progressEvent.target.getResponseHeader('x-decompressed-content-length');
+        console.log('total length', totalLength);
+        if (totalLength) {
+          let progress = Math.round((progressEvent.loaded * 100) / totalLength);
+          console.log('progress', progress);
+        }
+      },
+    });
+    dispatch(getUserFilesSuccess(response.data));
+  } catch (error: any) {
+    console.log('file error');
+  }
+};
+
 export default fileSlice.reducer;

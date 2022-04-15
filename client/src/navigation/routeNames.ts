@@ -7,5 +7,5 @@ export enum ROUTE_NAME {
   CURRENT_FOLDER = '/folder',
   CREATE_FOLDER = '/create-folder',
   DELETE_FOLDER = '/delete',
-  DETAILIZE_FOLDER = '/information',
+  DETAILIZE_FOLDER = '/upload',
 }
