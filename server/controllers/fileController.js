@@ -95,7 +95,6 @@ class FileController {
             const file = await File.findOne({  user:request.user.id, _id:request.query.id})
 
             if (!file) return res.status(400).json({message: "file not found!"})
-            console.log('delete file id =', file._id );
             //
            FileService.deleteFile(request, file)
            await file.remove()

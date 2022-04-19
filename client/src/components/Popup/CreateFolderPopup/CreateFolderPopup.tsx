@@ -28,7 +28,7 @@ function CreateFolderPopup() {
   };
   return (
     <>
-      <Modal title="Новая папка" visible={isModalVisible} onCancel={handleCancel}>
+      <Modal title="Новый мэш" visible={isModalVisible} onCancel={handleCancel}>
         <Form.Item
           label="Название:"
           name="folderName"

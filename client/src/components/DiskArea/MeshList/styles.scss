@@ -13,6 +13,12 @@
 .ant-list-item-meta-content {
     flex: 0 0;
 }
+
+.ant-list-item-meta-description {
+    width: 50px !important;
+    max-width: 50px !important;
+}
+
 .ant-card-body {
     width: 100%;
 }

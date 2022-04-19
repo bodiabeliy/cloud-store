@@ -7,6 +7,7 @@ import Folder from '../../../assets/folder.png';
 import Files from '../../../assets/file.png';
 import { useDispatch } from 'react-redux';
 import { deleteFile, getFile } from '../../../redux-slices/FileSlice ';
+import bytesToSize from '../../../utils/SizingCalculate';
 
 interface FileProps {
   currentFile: File | any;
@@ -66,7 +67,7 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
         description={
           props.currentFile.type == 'dir'
             ? 'Файлов:' + props.currentFile.children.length
-            : props.currentFile.size
+            : bytesToSize(props.currentFile.size)
         }
       />
       <div className="" onClick={(e) => e.stopPropagation()}>

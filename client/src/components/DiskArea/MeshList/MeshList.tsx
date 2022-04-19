@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { List, Avatar, Button, Space, Card, Upload } from 'antd';
 import VirtualList from 'rc-virtual-list';
@@ -21,23 +21,31 @@ import './styles.scss';
 import Preloader from '../../Preloader/Preloader';
 
 import { DeleteOutlined, DownloadOutlined, UploadOutlined } from '@ant-design/icons';
+import { isAuthUserSelector } from '../../../redux-slices/UserSlice';
 
 const MeshList = () => {
   const dispatch = useDispatch();
   const files = useSelector(getFilesSelector);
-  const folder = useSelector(getFolderSelector);
+  const isAuthorization = useSelector(isAuthUserSelector);
   const router = useHistory();
   const preloading = useSelector(isFilesLoadingSelector);
+
+  useEffect(() => {});
 
   const newFolder = () => {
     router.push('/create-folder');
   };
-  const Uploading = (uploadedFiles) => {
-    const files = [...uploadedFiles];
-    // console.log([...uploadedFiles]);
 
-    files.forEach((file) => dispatch(uploadFile(file)));
-  };
+  const UploadFiles = useCallback(
+    (uploadedFiles) => {
+      const files = [...uploadedFiles];
+      // console.log([...uploadedFiles]);
+
+      files.forEach((file) => dispatch(uploadFile(file)));
+    },
+    [isAuthorization]
+  );
+
   return (
     <>
       {preloading == true ? (
@@ -54,9 +62,14 @@ const MeshList = () => {
                 size="middle"
                 onClick={newFolder}
               >
-                Создать меш
+                Создать
               </Button>
-              <FileInput multiple type="file" setValue={(event) => Uploading(event)}></FileInput>
+              <FileInput
+                description="Загрузить"
+                multiple
+                type="file"
+                setValue={(event) => UploadFiles(event)}
+              ></FileInput>
             </div>
           </Card>
           <List>

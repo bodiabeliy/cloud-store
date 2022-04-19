@@ -69,7 +69,7 @@ function Dashboard() {
               {files.length ? (
                 <DiskArea />
               ) : (
-                <Empty description="Список ячеек (меш) пустой!" image={emptyList}>
+                <Empty description="Список ячеек (мэш) пустой!" image={emptyList}>
                   <Button type="primary" className="firstMesh" onClick={newFolder}>
                     Создать первый меш
                   </Button>
