@@ -126,12 +126,16 @@ export const createFiles = (folderId: any, name: string) => async (dispatch: App
 export const uploadFile = (file) => async (dispatch: AppDispatch) => {
   try {
     const formData = new FormData();
-    console.log(file);
 
     formData.append('file', file);
+    console.log('upload', file);
+
+    // if (folderId) {
+    //   formData.append('parent', folderId);
+    // }
 
     dispatch(createUserFilesStart());
-    const response = await api.post(`/upload`, formData, {
+    const response = await api.post(`/files/upload`, formData, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       onDownloadProgress: (progressEvent) => {
         const totalLength = progressEvent.lengthComputable
@@ -145,6 +149,7 @@ export const uploadFile = (file) => async (dispatch: AppDispatch) => {
         }
       },
     });
+
     dispatch(getUserFilesSuccess(response.data));
   } catch (error: any) {
     console.log('file error');

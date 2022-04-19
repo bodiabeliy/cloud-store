@@ -72,7 +72,7 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
       <div className="" onClick={(e) => e.stopPropagation()}>
         <Button
           style={{ marginRight: '15px' }}
-          onClick={() => deleteCurrentFile(props.currentFile)}
+          onClick={(e) => deleteCurrentFile(props.currentFile)}
           type="primary"
           icon={<DeleteOutlined />}
           shape="circle"

@@ -14,6 +14,7 @@
     "antd": "^4.17.3",
     "antd-img-crop": "^4.1.0",
     "axios": "^0.24.0",
+    "express": "^4.17.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "path": "^0.12.7",
@@ -32,7 +33,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node static_server.js",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -5,10 +5,12 @@ const config  = require("config")
 const authRouter = require("./routes/authorization")
 const fileRouter = require("./routes/files")
 const fileUpload = require("express-fileupload")
-
+const path = require("path")
+const filePathMiddleware = require("./middlware/index")
 const app = express()
 
 //
+app.use(filePathMiddleware(path.resolve(__dirname, "files")))
 app.use(fileUpload({}))
 
 // прослойка для передачи запросов на все домены
@@ -20,12 +22,13 @@ app.use(cors({
 app.use(express.json())
 
 //маршуты
+
 app.use('/api/auth', authRouter)
 app.use('/api/files', fileRouter)
 
 
 
-const PORT = config.get("ServerPort")
+const PORT = process.env.PORT || config.get("ServerPort")
 const serverStart = async () => {
     try {
         // подключение к БД monoose

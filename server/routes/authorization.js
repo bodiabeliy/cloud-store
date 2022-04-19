@@ -44,7 +44,7 @@ async (request, responce ) => {
         await createUser.save()
 
          // создаем для пользователя папку под файлы
-         await fileService.createDir(File({user:createUser._id, name: ''}))
+         await fileService.createDir(request, new File({user:createUser._id, name: ''}))
 
             return responce.json({massege: "User was creared successfully!"})
         

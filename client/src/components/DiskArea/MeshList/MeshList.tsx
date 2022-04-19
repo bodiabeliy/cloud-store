@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
-import { List, Avatar, Button, Space, Card } from 'antd';
+import { List, Avatar, Button, Space, Card, Upload } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,17 +10,20 @@ import {
   isFilesLoadingSelector,
   getFile,
   deleteFile,
+  uploadFile,
 } from '../../../redux-slices/FileSlice ';
 
+import FileInput from '../../Input/inputFile';
 import CurrentFile from '../CurrentMesh/CurrentMesh';
 import DeleteModal from '../../Popup/DeletePopup/DeletePopup';
 import './styles.scss';
 
 import Preloader from '../../Preloader/Preloader';
 
-import { DeleteOutlined, DownloadOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownloadOutlined, UploadOutlined } from '@ant-design/icons';
 
 const MeshList = () => {
+  const dispatch = useDispatch();
   const files = useSelector(getFilesSelector);
   const folder = useSelector(getFolderSelector);
   const router = useHistory();
@@ -28,6 +31,12 @@ const MeshList = () => {
 
   const newFolder = () => {
     router.push('/create-folder');
+  };
+  const Uploading = (uploadedFiles) => {
+    const files = [...uploadedFiles];
+    // console.log([...uploadedFiles]);
+
+    files.forEach((file) => dispatch(uploadFile(file)));
   };
   return (
     <>
@@ -47,9 +56,7 @@ const MeshList = () => {
               >
                 Создать меш
               </Button>
-              <Button type="primary" shape="round" icon={<DownloadOutlined />} size="middle">
-                Скачать
-              </Button>
+              <FileInput multiple type="file" setValue={(event) => Uploading(event)}></FileInput>
             </div>
           </Card>
           <List>
@@ -62,5 +69,4 @@ const MeshList = () => {
     </>
   );
 };
-
 export default MeshList;

@@ -16,7 +16,7 @@ const MeshDetailaze = () => {
   const Uploading = (e) => {
     console.log(e);
 
-    // dispatch(uploadFile(e.file));
+    dispatch(uploadFile(e.file));
   };
 
   return (

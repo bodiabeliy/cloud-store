@@ -8,12 +8,12 @@ const path = require('path');
 class FileService {
 
     // ф-я создания папок
-    createDir(file) {
+    createDir(req, file) {
 
         // создание пути  для файла (путь к домашей папке\имя пользователя\относительный путь)
         return new Promise((resolve, reject) => {
             try {
-                let filePath = `${config.get('filePath')}\\${file.user}\\${file.path}`
+                let filePath = this.getPath(req, file)
                 // если нет папки
                 if (!fs.existsSync(filePath)) {
                     fs.mkdir(path.join(filePath, ''),
@@ -35,13 +35,13 @@ class FileService {
     }
 
     // получение пути до удаляемоно файла
-    getPath(file) {
-        return config.get('filePath') + '\\' + file.user + '\\' + file.path
+    getPath(req, file) {
+        return req.filePath + '\\' + file.user + '\\' + file.path
     }
 
     // удаление файла
-    deleteFile(file) {
-        const path = this.getPath(file)
+    deleteFile(req, file) {
+        const path = this.getPath(req, file)
         fs.rmdirSync(path,{recursive:true})
 
     }
