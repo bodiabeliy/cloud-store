@@ -1,4 +1,4 @@
-import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownloadOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { Avatar, Button, List, Modal } from 'antd';
 import React, { FC } from 'react';
 import { Link, useHistory } from 'react-router-dom';
@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Folder from '../../../assets/folder.png';
 import Files from '../../../assets/file.png';
 import { useDispatch } from 'react-redux';
-import { deleteFile, getFile } from '../../../redux-slices/FileSlice ';
+import { deleteFile, getFile, downloadFile} from '../../../redux-slices/FileSlice ';
 import bytesToSize from '../../../utils/SizingCalculate';
 
 interface FileProps {
@@ -24,7 +24,7 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
     router.push('/upload');
   };
 
-  const deleteCurrentFile = (file) => {
+  const DeleteCurrentFile = (file) => {
     confirm({
       title: (
         <>
@@ -47,6 +47,14 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
       onCancel() {},
     });
   };
+
+  const DownloadFiles = (event, downloadedFile) => {
+    event.stopPropagation()
+    console.log("down", downloadedFile);
+    
+    dispatch(downloadFile(downloadedFile._id, downloadedFile.name))
+  };
+
 
   return (
     <List.Item
@@ -71,14 +79,22 @@ const CurrentMesh: FC<FileProps> = (props: any) => {
         }
       />
       <div className="" onClick={(e) => e.stopPropagation()}>
+      <Button
+          style={{ marginRight: '15px' }}
+          onClick={(e) => DownloadFiles(e, props.currentFile)}
+          type="primary"
+          icon={<DownloadOutlined />}
+          shape="circle"
+          size="large"
+        />
         <Button
           style={{ marginRight: '15px' }}
-          onClick={(e) => deleteCurrentFile(props.currentFile)}
+          onClick={(e) => DeleteCurrentFile(props.currentFile)}
           type="primary"
           icon={<DeleteOutlined />}
           shape="circle"
           size="large"
-        ></Button>
+         />
       </div>
     </List.Item>
   );

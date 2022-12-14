@@ -15,10 +15,8 @@ import {
 
 import FileInput from '../../Input/inputFile';
 import CurrentFile from '../CurrentMesh/CurrentMesh';
-import DeleteModal from '../../Popup/DeletePopup/DeletePopup';
 import './styles.scss';
 
-import Preloader from '../../Preloader/Preloader';
 
 import { DeleteOutlined, DownloadOutlined, UploadOutlined } from '@ant-design/icons';
 import { isAuthUserSelector } from '../../../redux-slices/UserSlice';

@@ -182,14 +182,14 @@ class FileController {
         try {
             // находим файл в БД
             const file = await File.findOne({_id:request.query.id, user:request.user.id})
-            const path = config.get('filepath') + '\\' + request.user.id + '\\' + file.path + '\\' + file.name
+            const path = `${request.filePath}\\${request.user.id}\\${file.name}`
             if(fs.existsSync(path)) {
                 return response.download(path, file.path)
             }
-            return response.status(404).message("file not found!")
+            return response.status(404).json("file not found!")
         } catch (error) {
             console.log("happped error: ", error);
-            response.status(500).message("excepted error", error)
+            response.status(500).json(error)
         }
     }
 }

@@ -45,6 +45,10 @@ export const fileSlice = createSlice({
     deleteUserFileSuccess: (state, action: PayloadAction<File>) => {
       state.files = state.files.filter((file) => file._id !== action.payload);
     },
+    downloadUserFileSuccess: (state, action: PayloadAction<File[]>) => {
+      state.files = action.payload;
+
+    },
   },
 });
 
@@ -55,6 +59,7 @@ export const {
   createUserFilesStart,
   createUserFilesSuccess,
   deleteUserFileSuccess,
+  downloadUserFileSuccess,
 } = fileSlice.actions;
 
 export const getFolderSelector = (state: RootState) => state.file.currentFolder;
@@ -155,5 +160,28 @@ export const uploadFile = (file) => async (dispatch: AppDispatch) => {
     console.log('file error');
   }
 };
+
+export const downloadFile =(fileId, fileName) => async (dispatch: AppDispatch) => {
+  console.log('file in slice', fileId);
+  
+  const response = await api.get(`/files/download?id=${fileId}`,  {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    responseType: 'blob'
+  })
+
+  
+  if (response.status == 200) {
+    const blob = response.data
+    const downloadUrl = window.URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = downloadUrl
+    link.download = fileName
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+
+  }
+
+}
 
 export default fileSlice.reducer;
