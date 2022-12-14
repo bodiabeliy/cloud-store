@@ -177,6 +177,21 @@ class FileController {
             return response.status(400).json(error)
         }
     }
+
+    async DownloadFile(request, response) {
+        try {
+            // находим файл в БД
+            const file = await File.findOne({_id:request.query.id, user:request.user.id})
+            const path = config.get('filepath') + '\\' + request.user.id + '\\' + file.path + '\\' + file.name
+            if(fs.existsSync(path)) {
+                return response.download(path, file.path)
+            }
+            return response.status(404).message("file not found!")
+        } catch (error) {
+            console.log("happped error: ", error);
+            response.status(500).message("excepted error", error)
+        }
+    }
 }
 
 module.exports = new FileController()

@@ -9,6 +9,6 @@ filesRouter.post('/uploadFolder', fileController.getUserToken,  fileController.u
 filesRouter.get('',  fileController.getUserToken, fileController.getFiles)
 filesRouter.get('/', fileController.getUserToken, fileController.getFile)
 filesRouter.delete('/',  fileController.getUserToken, fileController.deleteFile)
-
+filesRouter.get('/download',  fileController.getUserToken, fileController.DownloadFile)
 
 module.exports = filesRouter
