@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { List, Avatar, Button, Space, Card, Upload } from 'antd';
 import VirtualList from 'rc-virtual-list';
@@ -30,6 +30,8 @@ const MeshList = () => {
   const router = useHistory();
   const preloading = useSelector(isFilesLoadingSelector);
 
+  const [dragEnter, setDragEnter] = useState(false)
+
   useEffect(() => {});
 
   const newFolder = () => {
@@ -45,6 +47,33 @@ const MeshList = () => {
     },
     [isAuthorization]
   );
+
+  const dragEnterHandler =(event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setDragEnter(true)
+  }
+
+  const dragLeaveHandler =(event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setDragEnter(false)
+  }
+
+  const dragOverHandler =(event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setDragEnter(true)
+  }
+
+  const dropHandler =(event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    let uploadedFiles = [...event.dataTransfer.files]
+    uploadedFiles.forEach((file) => dispatch(uploadFile(file)));
+    
+    setDragEnter(false)
+  }
 
   return (
     <>
@@ -72,11 +101,27 @@ const MeshList = () => {
               ></FileInput>
             </div>
           </Card>
-          <List>
+          {dragEnter ?
+           <div className="meshList__droppingContainer"
+              onDragOver={(e) => dragOverHandler(e)}
+              onDragLeave={(e) => dragLeaveHandler(e)}
+              onDragEnter={(e) => dragEnterHandler(e)}
+              onDrop={(e) => dropHandler(e)}
+           >
+            <span>Drag file there</span>
+           </div> 
+           :
+           <div 
+            onDragEnter={(e) => dragEnterHandler(e)}
+            onDragLeave={(e) => dragLeaveHandler(e)}
+            onDragOver={(e) => dragOverHandler(e)}>
+            <List>
             <VirtualList data={files} itemHeight={47} itemKey="files">
               {(file) => <CurrentFile currentFile={file}></CurrentFile>}
             </VirtualList>
           </List>
+           </div>
+          }
         </>
       )}
     </>

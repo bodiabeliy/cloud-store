@@ -2,7 +2,7 @@ import { Card } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getFilesSelector } from '../../redux-slices/FileSlice ';
-import FileList from '../DiskArea/MeshList/MeshList';
+import MeshList from '../DiskArea/MeshList/MeshList';
 import bytesToSize from '../../utils/SizingCalculate';
 import { getUserSelector } from '../../redux-slices/UserSlice';
 
@@ -51,7 +51,7 @@ const DiskArea = () => {
       >
         {contentList[activeTabKey1]}
       </Card>
-      <FileList></FileList>
+      <MeshList />
     </>
   );
 };
