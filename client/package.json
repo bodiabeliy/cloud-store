@@ -13,7 +13,7 @@
     "@types/react-dom": "^17.0.9",
     "antd": "^4.17.3",
     "antd-img-crop": "^4.1.0",
-    "axios": "^0.24.0",
+    "axios": "^1.6.4",
     "express": "^4.17.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
